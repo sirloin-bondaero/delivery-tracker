@@ -19,6 +19,8 @@ const serverRootLogger: winston.Logger = coreLogger.rootLogger.child({
 const server = new ApolloServer({
   typeDefs,
   resolvers: resolvers.resolvers,
+  // 내부 전용(인증 없는 조회 서버) + 내부 ALB GET 헬스체크(/?query={__typename}) 허용을 위해 CSRF 방지 비활성화
+  csrfPrevention: false,
   formatError: (formattedError, error) => {
     const extensions = formattedError.extensions ?? {};
     switch (extensions.code) {
